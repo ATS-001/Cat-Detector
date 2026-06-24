@@ -9,32 +9,36 @@ st.set_page_config(page_title="AI Cat Detector", page_icon="🐱")
 st.title("🐱 Live Cat Detector")
 st.write("Upload an image to check for a cat using your trained AI model.")
 
-# 2. Injection: Hides ONLY the Pencil & Deploy Button, Leaves Three-Dot Menu
+# 2. Injection: Forces Developer Elements Away & Locks the 3-Dot Menu
 custom_style = """
 <style>
-    /* Hide the Deploy button specifically */
-    .stAppDeployButton {
+    /* 1. Target the Deploy Button wrapper specifically */
+    div.stAppDeployButton, .stAppDeployButton {
         display: none !important;
     }
     
-    /* Hide the developer action buttons (like the pencil icon) */
-    [data-testid="stAppToolbarActions"] > button, 
-    [data-testid="stAppToolbarActions"] > div:not([data-testid="stMainMenu"]) {
+    /* 2. Target the action toolbar block completely to remove edit buttons */
+    header[data-testid="stHeader"] button:not(#open-menu) {
         display: none !important;
     }
     
-    /* Ensure the Three-Dot Menu block stays completely visible and interactable */
-    [data-testid="stMainMenu"] {
+    /* 3. Strip structural icon containers except the core menu identifier */
+    [data-testid="stAppToolbarActions"] > *:not([data-testid="stMainMenu"]) {
+        display: none !important;
+    }
+    
+    /* 4. Force the native Three-Dot MainMenu container block to remain active */
+    [data-testid="stMainMenu"], #MainMenu {
         display: inline-flex !important;
         visibility: visible !important;
     }
 
-    /* Hides the default "Made with Streamlit" footer text */
+    /* 5. Clear default background footer markers */
     footer {
         visibility: hidden !important;
     }
     
-    /* Creates your custom permanent centered footer */
+    /* 6. Static branding footer creation */
     .custom-footer {
         position: fixed;
         left: 0;
