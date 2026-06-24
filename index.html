@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Cat Detector</title>
+    <script src="https://cdn.jsdelivr.net/npm/inferencejs"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #121212; color: white; text-align: center; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .video-container { position: relative; display: inline-block; margin-top: 20px; border: 4px solid #333; border-radius: 8px; overflow: hidden; }
+        video { display: block; width: 100%; max-width: 500px; }
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        #status { color: #888; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐱 Live Cat Detector</h1>
+        <p id="status">Loading AI Model...</p>
+        <div class="video-container">
+            <video id="webcam" autoplay muted playsinline></video>
+            <canvas id="overlay"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('overlay');
+        const ctx = canvas.getContext('2d');
+        const statusText = document.getElementById('status');
+
+        // GitHub will inject your hidden secret key here automatically
+        const API_KEY = "__ROBOFLOW_KEY__"; 
+        const MODEL_NAME = "cat-eugjv";
+        const VERSION = "1";
+
+        async function startApp() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                video.srcObject = stream;
+
+                const inferEngine = new inferencejs.InferenceEngine();
+                const workerId = await inferEngine.startWorker(MODEL_NAME, VERSION, API_KEY);
+                
+                statusText.innerText = "Cat Detector is Ready!";
+                statusText.style.color = "#4CAF50";
+
+                video.addEventListener('loadedmetadata', () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    setInterval(async () => {
+                        const predictions = await inferEngine.infer(workerId, video);
+                        drawBoxes(predictions);
+                    }, 200);
+                });
+            } catch (err) {
+                statusText.innerText = "Error: " + err.message;
+                statusText.style.color = "#ff4444";
+            }
+        }
+
+        function drawBoxes(predictions) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            predictions.forEach(pred => {
+                ctx.strokeStyle = "#00FF00";
+                ctx.lineWidth = 4;
+                ctx.strokeRect(pred.bbox.x - pred.bbox.width/2, pred.bbox.y - pred.bbox.height/2, pred.bbox.width, pred.bbox.height);
+
+                ctx.fillStyle = "#00FF00";
+                ctx.font = "18px Arial";
+                const label = `${pred.class} (${Math.round(pred.confidence * 100)}%)`;
+                ctx.fillRect(pred.bbox.x - pred.bbox.width/2, pred.bbox.y - pred.bbox.height/2 - 25, ctx.measureText(label).width + 10, 25);
+
+                ctx.fillStyle = "black";
+                ctx.fillText(label, pred.bbox.x - pred.bbox.width/2 + 5, pred.bbox.y - pred.bbox.height/2 - 6);
+            });
+        }
+        startApp();
+    </script>
+</body>
+</html>
