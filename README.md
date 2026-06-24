@@ -51,7 +51,7 @@ Create the hidden Streamlit directory and configuration file in your root folder
 mkdir .streamlit
 touch .streamlit/secrets.toml
 ```
-# Open 
+Open 
 ```.streamlit/secrets.toml``` 
 in your local text editor and insert your private credential mapping exactly like this:
 
