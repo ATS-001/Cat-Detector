@@ -9,12 +9,48 @@ st.set_page_config(page_title="AI Cat Detector", page_icon="🐱")
 st.title("🐱 Live Cat Detector")
 st.write("Upload an image to check for a cat using your trained AI model.")
 
-# 2. Secure API Connection
+# 2. Injection: Hides Developer Top Bars & Adds Your Custom Footer
+custom_style = """
+<style>
+    /* Hides the Edit Pencil and Deploy Button elements in the header toolbar */
+    [data-testid="stAppToolbar"] button:not([id="open-menu"]) {
+        display: none !important;
+    }
+    
+    /* Hides the default "Made with Streamlit" footer text */
+    footer {
+        visibility: hidden !important;
+    }
+    
+    /* Creates your custom permanent centered footer */
+    .custom-footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: transparent;
+        color: #888888;
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+    }
+</style>
+
+<div class="custom-footer">
+    Aaron Thalakkottor Sooraj<br>
+    Designed & Developed by ATS-PDZ • © Since 2023
+</div>
+"""
+st.markdown(custom_style, unsafe_allow_html=True)
+
+# 3. Secure API Connection
 API_KEY = st.secrets["ROBOFLOW_API_KEY"]
 MODEL_NAME = "cat-eugjv"
 VERSION = "1"
 
-# 3. File Uploader UI
+# 4. File Uploader UI
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
@@ -22,7 +58,7 @@ if uploaded_file is not None:
     file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
     image = cv2.imdecode(file_bytes, 1)
     
-    # FIX: Convert BGR to RGB so the AI server sees the correct colors
+    # Convert BGR to RGB so the AI server sees the correct colors
     image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     
     # Encode to JPEG for the API payload
@@ -31,7 +67,7 @@ if uploaded_file is not None:
 
     st.write("Analyzing image...")
 
-    # 4. Request predictions securely from Roboflow Hosted Cloud
+    # 5. Request predictions securely from Roboflow Hosted Cloud
     url = f"https://detect.roboflow.com/{MODEL_NAME}/{VERSION}?api_key={API_KEY}"
     try:
         response = requests.post(url, data=img_base64, headers={"Content-Type": "application/x-www-form-urlencoded"})
