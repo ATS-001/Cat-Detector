@@ -12,16 +12,21 @@ st.write("Upload an image to check for a cat using your trained AI model.")
 # 2. Injection: Hides Developer Top Bars & Adds Your Custom Footer
 custom_style = """
 <style>
-    /* Hides the Deploy button and the Edit Pencil completely */
-    .stDeployButton, [data-testid="stAppToolbar"] {
+    /* Hides the new Deploy Button class and the header background helper frames */
+    .stAppDeployButton, [data-testid="stHeader"] > div:first-child > div:first-child {
         display: none !important;
     }
     
-    /* Ensures the standard three-dot menu icon block stays visible if needed */
-    #MainMenu {
-        visibility: visible !important;
+    /* Target the action toolbar explicitly to hide individual button segments except the menu */
+    [data-testid="stAppToolbar"] > div {
+        display: none !important;
     }
     
+    /* Forces the standard multi-dot element box container block to stay interactive */
+    [data-testid="stAppToolbarActions"] {
+        display: inline-flex !important;
+    }
+
     /* Hides the default "Made with Streamlit" footer text */
     footer {
         visibility: hidden !important;
