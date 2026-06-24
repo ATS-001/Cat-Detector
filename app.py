@@ -9,22 +9,24 @@ st.set_page_config(page_title="AI Cat Detector", page_icon="🐱")
 st.title("🐱 Live Cat Detector")
 st.write("Upload an image to check for a cat using your trained AI model.")
 
-# 2. Injection: Hides Developer Top Bars & Adds Your Custom Footer
+# 2. Injection: Hides ONLY the Pencil & Deploy Button, Leaves Three-Dot Menu
 custom_style = """
 <style>
-    /* Hides the new Deploy Button class and the header background helper frames */
-    .stAppDeployButton, [data-testid="stHeader"] > div:first-child > div:first-child {
+    /* Hide the Deploy button specifically */
+    .stAppDeployButton {
         display: none !important;
     }
     
-    /* Target the action toolbar explicitly to hide individual button segments except the menu */
-    [data-testid="stAppToolbar"] > div {
+    /* Hide the developer action buttons (like the pencil icon) */
+    [data-testid="stAppToolbarActions"] > button, 
+    [data-testid="stAppToolbarActions"] > div:not([data-testid="stMainMenu"]) {
         display: none !important;
     }
     
-    /* Forces the standard multi-dot element box container block to stay interactive */
-    [data-testid="stAppToolbarActions"] {
+    /* Ensure the Three-Dot Menu block stays completely visible and interactable */
+    [data-testid="stMainMenu"] {
         display: inline-flex !important;
+        visibility: visible !important;
     }
 
     /* Hides the default "Made with Streamlit" footer text */
