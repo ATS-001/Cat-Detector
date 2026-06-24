@@ -2,7 +2,7 @@
 
 A secure, cloud-powered web application that detects cats in real-time from uploaded images using a custom-trained object detection model. Built with Streamlit, OpenCV, and the Roboflow Inference API.
 
-🚀 **Live Demo:** [Launch App on Streamlit Community Cloud](https://share.streamlit.io/) *(Replace this with your actual live Streamlit URL link)*
+🚀 **Live Demo:** [Launch App on Streamlit Community Cloud](https://cat-detector-ats001.streamlit.app/)) 
 
 ---
 
