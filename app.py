@@ -12,9 +12,14 @@ st.write("Upload an image to check for a cat using your trained AI model.")
 # 2. Injection: Hides Developer Top Bars & Adds Your Custom Footer
 custom_style = """
 <style>
-    /* Hides the Edit Pencil and Deploy Button elements in the header toolbar */
-    [data-testid="stAppToolbar"] button:not([id="open-menu"]) {
+    /* Hides the Deploy button and the Edit Pencil completely */
+    .stDeployButton, [data-testid="stAppToolbar"] {
         display: none !important;
+    }
+    
+    /* Ensures the standard three-dot menu icon block stays visible if needed */
+    #MainMenu {
+        visibility: visible !important;
     }
     
     /* Hides the default "Made with Streamlit" footer text */
@@ -35,6 +40,7 @@ custom_style = """
         font-size: 14px;
         font-family: Arial, sans-serif;
         line-height: 1.6;
+        z-index: 999;
     }
 </style>
 
