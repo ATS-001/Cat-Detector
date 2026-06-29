@@ -67,7 +67,14 @@ Special thanks to Darshana D Devi ([LinkedIn Profile](https://www.linkedin.com/i
 
 ---
 
-## 👤 Author
-**Aaron Thalakkottor Sooraj** - B.Tech Computer Science & Engineering Student
+### 👨‍💻 Developer Profile
+* **Name:** Aaron Thalakkottor Sooraj
+* **Degree:** B.Tech in Computer Science Engineering (CSE)
+* **Institution:** Vidya Academy of Science and Technology, Thrissur
 
 ---
+
+### 📜 License
+```text
+COPYRIGHT © Since 2023 ATS-PDZ - ALL RIGHTS RESERVED.
+```
